@@ -154,8 +154,8 @@
             (add-to-list 'ac-sources 'ac-source-words-in-same-mode-buffers)
             ))
 
-(add-hook 'ruby-mode-hook 'robe-mode)
-(push 'ac-source-robe ac-sources)
+;; (add-hook 'ruby-mode-hook 'robe-mode)
+;; (push 'ac-source-robe ac-sources)
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; -- ORG-MODE -- ;;
@@ -198,6 +198,7 @@
 (global-set-key (kbd "<C-down>") '(lambda () (interactive) (forward-line 6)))
 (global-set-key (kbd "<C-up>") '(lambda () (interactive) (forward-line -6)))
 
+(global-set-key (kbd "C-c C-d") 'duplicate-thing)
 
 (global-set-key "\C-xB" 'bury-buffer)
 (global-set-key "\C-xE" 'apply-macro-to-region-lines)
@@ -223,7 +224,6 @@
 (global-set-key [M-up] 'move-text-up)
 (global-set-key [M-down] 'move-text-down)
 (global-set-key [C-delete] 'kill-line)
-
 
 (defun delete-word (arg)
   "Delete characters forward until encountering the end of a word.
