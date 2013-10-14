@@ -165,14 +165,12 @@
 ;;             (add-to-list 'ac-sources 'ac-source-words-in-same-mode-buffers)
 ;;             ))
 
-(add-hook 'ruby-mode-hook 'robe-mode)
+;; (add-hook 'ruby-mode-hook 'robe-mode)
 ;; (push 'ac-source-robe ac-sources)
 
 (add-hook 'after-init-hook 'global-company-mode)
 (eval-after-load 'company
   '(add-to-list 'company-backends 'company-inf-ruby))
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-robe))
 
 ;; (push 'company-robe company-backends)
 
