@@ -45,11 +45,13 @@
       (append
        (list
         (expand-file-name "~/.emacs.d/elpa/")
-        (expand-file-name "~/.emacs.d/mixed/")
+        (expand-file-name "~/.emacs.d/packages/")
 	) load-path))
 
-;; include sub-directories of elpa
+;; include sub-directories of elpa and packages
 (let ((default-directory "~/.emacs.d/elpa/"))
+  (normal-top-level-add-subdirs-to-load-path))
+(let ((default-directory "~/.emacs.d/packages/"))
   (normal-top-level-add-subdirs-to-load-path))
 
 ;;;;;;;;;;;;;;;;;;;;
@@ -290,6 +292,7 @@ With argument, do this that many times."
  '(rails-ws:default-server-type "mongrel")
  '(rails-ws:port "3000")
  '(rails-ws:server-name "http://localhost")
+ '(ruby-insert-encoding-magic-comment nil)
  '(safe-local-variable-values (quote ((encoding . utf-8))))
  '(yas-fallback-behavior (quote call-other-command))
  '(yas-prompt-functions (quote (yas/x-prompt yas/dropdown-prompt)))
