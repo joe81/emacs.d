@@ -54,6 +54,15 @@
 (let ((default-directory "~/.emacs.d/packages/"))
   (normal-top-level-add-subdirs-to-load-path))
 
+;; backups
+(setq make-backup-files t ;; do make backups
+  backup-by-copying t     ;; and copy them here
+  backup-directory-alist '(("~/.emacs.d/backups"))
+  version-control t
+  kept-new-versions 2
+  kept-old-versions 5
+  delete-old-versions t)
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; Package Config ;;
 ;;;;;;;;;;;;;;;;;;;;
