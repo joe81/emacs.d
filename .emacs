@@ -138,24 +138,32 @@
 
 
 ;; Autocomplete
-(add-to-list 'load-path "~/.emacs.d/mixed/auto-complete-1.3.1")
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/mixed/auto-complete-1.3.1/ac-dict")
-(ac-config-default)
-(ac-set-trigger-key "TAB")
-(require 'auto-complete-etags)
+;; (add-to-list 'load-path "~/.emacs.d/mixed/auto-complete-1.3.1")
+;; (require 'auto-complete-config)
+;; (add-to-list 'ac-dictionary-directories "~/.emacs.d/mixed/auto-complete-1.3.1/ac-dict")
+;; (ac-config-default)
+;; (ac-set-trigger-key "TAB")
+;; (require 'auto-complete-etags)
 
-;; Autocomplete
-(add-hook 'ruby-mode-hook
-          (lambda ()
-            (add-to-list 'ac-sources 'ac-source-gtags)
-            ;; (add-to-list 'ac-sources 'ac-source-abbrev)
-            ;; (add-to-list 'ac-sources 'ac-source-yasnippet)
-            (add-to-list 'ac-sources 'ac-source-words-in-same-mode-buffers)
-            ))
+;; ;; Autocomplete
+;; (add-hook 'ruby-mode-hook
+;;           (lambda ()
+;;             (add-to-list 'ac-sources 'ac-source-gtags)
+;;             ;; (add-to-list 'ac-sources 'ac-source-abbrev)
+;;             ;; (add-to-list 'ac-sources 'ac-source-yasnippet)
+;;             (add-to-list 'ac-sources 'ac-source-words-in-same-mode-buffers)
+;;             ))
 
-;; (add-hook 'ruby-mode-hook 'robe-mode)
+(add-hook 'ruby-mode-hook 'robe-mode)
 ;; (push 'ac-source-robe ac-sources)
+
+(add-hook 'after-init-hook 'global-company-mode)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-inf-ruby))
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-robe))
+
+;; (push 'company-robe company-backends)
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; -- ORG-MODE -- ;;
@@ -254,15 +262,18 @@ With argument, do this that many times."
  '(("\\(\\b\\sw[_a-zA-Z0-9]*:\\)\\(?:\\s-\\|$\\)" (1 font-lock-constant-face))))
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(ac-auto-show-menu 0.4)
  '(ac-comphist-threshold 1.6)
  '(autopair-global-mode t)
  '(blink-cursor-mode nil)
  '(column-number-mode t)
+ '(company-auto-complete (quote (quote company-explicit-action-p)))
+ '(company-idle-delay 0.5)
+ '(company-show-numbers t)
  '(global-pabbrev-mode t)
  '(ido-enable-flex-matching t)
  '(kill-ring-max 2000)
@@ -271,6 +282,7 @@ With argument, do this that many times."
  '(rails-chm-file nil)
  '(rails-default-environment "development")
  '(rails-enable-ruby-electric t)
+ '(rails-indent-and-complete nil)
  '(rails-number-of-lines-shown-when-opening-log-file 130)
  '(rails-ri-command "ri")
  '(rails-ruby-command "~/.rvm/rubies/ruby-2.0.0-p247/bin/ruby")
@@ -278,22 +290,21 @@ With argument, do this that many times."
  '(rails-ws:default-server-type "mongrel")
  '(rails-ws:port "3000")
  '(rails-ws:server-name "http://localhost")
- '(rails-indent-and-complete nil)
  '(safe-local-variable-values (quote ((encoding . utf-8))))
- '(yas/fallback-behavior (quote call-other-command))
+ '(yas-fallback-behavior (quote call-other-command))
+ '(yas-prompt-functions (quote (yas/x-prompt yas/dropdown-prompt)))
+ '(yas-snippet-revival nil)
+ '(yas-trigger-symbol " =>")
  '(yas/next-field-key (quote ("<tab>")))
  '(yas/prev-field-key (quote ("<backtab>" "<S-tab>")))
- '(yas/prompt-functions (quote (yas/x-prompt yas/dropdown-prompt)))
  '(yas/skip-and-clear-key "C-d")
- '(yas/snippet-revival nil)
- '(yas/trigger-key "TAB")
- '(yas/trigger-symbol " =>"))
+ '(yas/trigger-key "TAB"))
 
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(font-lock-constant-face ((nil (:foreground "#FBDE2D"))))
  '(font-lock-keyword-face ((t (:foreground "#FBDE2D"))))
  '(font-lock-variable-name-face ((nil (:foreground "#ff0" :weight semi-bold)))))
