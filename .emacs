@@ -45,11 +45,13 @@
       (append
        (list
         (expand-file-name "~/.emacs.d/elpa/")
-        (expand-file-name "~/.emacs.d/mixed/")
+        (expand-file-name "~/.emacs.d/packages/")
 	) load-path))
 
-;; include sub-directories of elpa
+;; include sub-directories of elpa and packages
 (let ((default-directory "~/.emacs.d/elpa/"))
+  (normal-top-level-add-subdirs-to-load-path))
+(let ((default-directory "~/.emacs.d/packages/"))
   (normal-top-level-add-subdirs-to-load-path))
 
 ;;;;;;;;;;;;;;;;;;;;

@@ -2,3 +2,6 @@
 /org-clock-save.el
 /auto-save-list
 /elpa/archives
+
+# own git repo see: https://github.com/joe81/emacs-rails
+packages/emacs-rails
