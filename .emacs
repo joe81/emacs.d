@@ -67,6 +67,9 @@
 ;; Package Config ;;
 ;;;;;;;;;;;;;;;;;;;;
 
+(require 'autopair)
+(autopair-global-mode) ;; to enable in all buffers
+
 ;; Lorem Ipsum
 (autoload 'Lorem-ipsum-insert-paragraphs "lorem-ipsum" "" t)
 (autoload 'Lorem-ipsum-insert-sentences "lorem-ipsum" "" t)
