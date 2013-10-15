@@ -57,7 +57,7 @@
 ;; backups
 (setq make-backup-files t ;; do make backups
   backup-by-copying t     ;; and copy them here
-  backup-directory-alist '(("~/.emacs.d/backups"))
+  backup-directory-alist '(("." . "~/.emacs.d/backups"))
   version-control t
   kept-new-versions 2
   kept-old-versions 5
@@ -286,9 +286,8 @@ With argument, do this that many times."
  '(blink-cursor-mode nil)
  '(column-number-mode t)
  '(company-auto-complete (quote (quote company-explicit-action-p)))
- '(company-idle-delay 0.5)
- '(company-show-numbers t)
- '(global-pabbrev-mode t)
+ '(company-idle-delay 0.8)
+ '(company-tooltip-limit 5)
  '(ido-enable-flex-matching t)
  '(kill-ring-max 2000)
  '(linum-mode t t)
