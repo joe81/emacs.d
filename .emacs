@@ -147,6 +147,8 @@
                              ))
 (yas-global-mode 1)
 
+;; flymake
+(add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
 ;; Autocomplete
 ;; (add-to-list 'load-path "~/.emacs.d/mixed/auto-complete-1.3.1")
