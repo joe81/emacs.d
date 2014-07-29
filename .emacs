@@ -30,7 +30,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
-(set-face-attribute 'default nil :height 110)
+(set-face-attribute 'default nil :height 100)
 
 (prefer-coding-system 'utf-8)
 (set-language-environment 'utf-8)
@@ -152,6 +152,13 @@
 
 ;; flymake
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
+
+;; ruby-tools-mode
+;;   https://github.com/rejeep/ruby-tools.el
+(add-hook 'ruby-mode-hook 'ruby-tools-mode)
+
+;; Ruby-Hash-Syntax-Switcher
+(define-key ruby-mode-map (kbd "M-S") 'ruby-toggle-hash-syntax)
 
 ;; Autocomplete
 ;; (add-to-list 'load-path "~/.emacs.d/mixed/auto-complete-1.3.1")
