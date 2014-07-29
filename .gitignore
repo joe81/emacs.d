@@ -8,3 +8,4 @@
 packages/emacs-rails
 
 /backups/*
+/session*
