@@ -28,6 +28,8 @@
 (if (boundp 'ns-option-modifier)
     (setq ns-option-modifier nil))
 
+(cua-mode)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 (set-face-attribute 'default nil :height 100)
@@ -127,6 +129,9 @@
 ;; Rails
 (require 'rails)
 (setq auto-mode-alist (append auto-mode-alist '(("\\Gemfile$" . ruby-mode))))
+(setq auto-mode-alist (append auto-mode-alist '(("\\Berksfile$" . ruby-mode))))
+(setq auto-mode-alist (append auto-mode-alist '(("\\.god$" . ruby-mode))))
+(require 'rubocop)
 
 ;; CoffeeScript
 (defun coffee-custom ()
@@ -157,34 +162,20 @@
 ;;   https://github.com/rejeep/ruby-tools.el
 (add-hook 'ruby-mode-hook 'ruby-tools-mode)
 
+;; robe
+(add-hook 'ruby-mode-hook 'robe-mode)
+(add-hook 'robe-mode-hook 'robe-start)
+
+(add-hook 'after-init-hook 'global-company-mode)
+;; (eval-after-load 'company
+;;   '(add-to-list 'company-backends 'company-inf-ruby))
+(eval-after-load 'company
+  '(push 'company-robe company-backends))
+
+
 ;; Ruby-Hash-Syntax-Switcher
 (define-key ruby-mode-map (kbd "M-S") 'ruby-toggle-hash-syntax)
 
-;; Autocomplete
-;; (add-to-list 'load-path "~/.emacs.d/mixed/auto-complete-1.3.1")
-;; (require 'auto-complete-config)
-;; (add-to-list 'ac-dictionary-directories "~/.emacs.d/mixed/auto-complete-1.3.1/ac-dict")
-;; (ac-config-default)
-;; (ac-set-trigger-key "TAB")
-;; (require 'auto-complete-etags)
-
-;; ;; Autocomplete
-;; (add-hook 'ruby-mode-hook
-;;           (lambda ()
-;;             (add-to-list 'ac-sources 'ac-source-gtags)
-;;             ;; (add-to-list 'ac-sources 'ac-source-abbrev)
-;;             ;; (add-to-list 'ac-sources 'ac-source-yasnippet)
-;;             (add-to-list 'ac-sources 'ac-source-words-in-same-mode-buffers)
-;;             ))
-
-;; (add-hook 'ruby-mode-hook 'robe-mode)
-;; (push 'ac-source-robe ac-sources)
-
-(add-hook 'after-init-hook 'global-company-mode)
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-inf-ruby))
-
-;; (push 'company-robe company-backends)
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; -- ORG-MODE -- ;;
@@ -235,6 +226,8 @@
 (global-set-key "\C-cy" 'uncomment-region)
 (global-set-key "\M-n" 'goto-line)
 
+(global-set-key "\C-f" 'vc-git-grep)
+
 (global-set-key [f7] '(lambda () (interactive)
                       (setq truncate-lines (not truncate-lines))
                       (recenter)))
@@ -282,20 +275,32 @@ With argument, do this that many times."
  'rhtml_mode
  '(("\\(\\b\\sw[_a-zA-Z0-9]*:\\)\\(?:\\s-\\|$\\)" (1 font-lock-constant-face))))
 
+(defun highlight-operators-ruby()
+  (font-lock-add-keywords
+   nil '(("[&|]" . font-lock-constant-face))
+   t))
+(add-hook 'ruby-mode-hook 'highlight-operators-ruby)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ac-auto-show-menu 0.4)
- '(ac-comphist-threshold 1.6)
  '(autopair-global-mode t)
  '(blink-cursor-mode nil)
+ '(coffee-tab-width 2)
  '(column-number-mode t)
  '(company-auto-complete (quote (quote company-explicit-action-p)))
- '(company-idle-delay 0.8)
+ '(company-idle-delay 0.6)
  '(company-tooltip-limit 5)
+ '(cua-delete-selection nil)
+ '(cua-enable-cua-keys nil)
+ '(cua-mode t nil (cua-base))
+ '(cua-normal-cursor-color "black")
+ '(ecb-options-version "2.40")
+ '(fill-column 90)
  '(ido-enable-flex-matching t)
+ '(js-indent-level 2)
  '(kill-ring-max 2000)
  '(linum-mode t t)
  '(rails-always-use-text-menus t)
@@ -305,14 +310,14 @@ With argument, do this that many times."
  '(rails-indent-and-complete nil)
  '(rails-number-of-lines-shown-when-opening-log-file 130)
  '(rails-ri-command "ri")
- ;; '(rails-ruby-command "~/.rvm/rubies/ruby-2.1.0/bin/ruby")
+ '(rails-tags-command "ctags-exuberant -e --Ruby-kinds=-cmfF -o TAGS -R .")
  '(rails-text-menu-function nil)
  '(rails-ws:default-server-type "mongrel")
  '(rails-ws:port "3000")
  '(rails-ws:server-name "http://localhost")
- '(rails-tags-command "ctags-exuberant -e --Ruby-kinds=-cmfF -o TAGS -R .")
  '(ruby-insert-encoding-magic-comment nil)
  '(safe-local-variable-values (quote ((encoding . utf-8))))
+ '(sh-basic-offset 2)
  '(yas-fallback-behavior (quote call-other-command))
  '(yas-prompt-functions (quote (yas/x-prompt yas/dropdown-prompt)))
  '(yas-snippet-revival nil)
@@ -329,4 +334,5 @@ With argument, do this that many times."
  ;; If there is more than one, they won't work right.
  '(font-lock-constant-face ((nil (:foreground "#FBDE2D"))))
  '(font-lock-keyword-face ((t (:foreground "#FBDE2D"))))
+ '(font-lock-operator-face ((nil (:foreground "#FBDE2D"))))
  '(font-lock-variable-name-face ((nil (:foreground "#ff0" :weight semi-bold)))))

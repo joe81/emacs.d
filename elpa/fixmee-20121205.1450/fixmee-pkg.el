@@ -1,1 +1,0 @@
-(define-package "fixmee" "20121205.1450" "Quickly navigate to FIXME notices in code [github]" (quote ((button-lock "0.9.8") (nav-flash "1.0.0") (back-button "0.6.0") (smartrep "0.0.3") (string-utils "0.0.6") (tabulated-list "0"))))
