@@ -164,7 +164,7 @@
 
 ;; robe
 (add-hook 'ruby-mode-hook 'robe-mode)
-(add-hook 'robe-mode-hook 'robe-start)
+;; (add-hook 'robe-mode-hook 'robe-start)
 
 (add-hook 'after-init-hook 'global-company-mode)
 ;; (eval-after-load 'company
@@ -175,6 +175,14 @@
 
 ;; Ruby-Hash-Syntax-Switcher
 (define-key ruby-mode-map (kbd "M-S") 'ruby-toggle-hash-syntax)
+
+;; Speedbar
+(require 'sr-speedbar)
+(make-face 'speedbar-face)
+(set-face-font 'speedbar-face "DejaVu Sans Mono 11")
+(setq speedbar-use-images nil)
+(setq sr-speedbar-right-side nil)
+(setq speedbar-mode-hook '(lambda () (buffer-face-set 'speedbar-face)))
 
 
 ;;;;;;;;;;;;;;;;;;;;
@@ -318,6 +326,11 @@ With argument, do this that many times."
  '(ruby-insert-encoding-magic-comment nil)
  '(safe-local-variable-values (quote ((encoding . utf-8))))
  '(sh-basic-offset 2)
+ '(speedbar-default-position (quote right))
+ '(speedbar-indentation-width 2)
+ '(speedbar-show-unknown-files t)
+ '(speedbar-update-flag t)
+ '(sr-speedbar-default-width 30)
  '(yas-fallback-behavior (quote call-other-command))
  '(yas-prompt-functions (quote (yas/x-prompt yas/dropdown-prompt)))
  '(yas-snippet-revival nil)
