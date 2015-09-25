@@ -131,7 +131,6 @@
 (setq auto-mode-alist (append auto-mode-alist '(("\\Gemfile$" . ruby-mode))))
 (setq auto-mode-alist (append auto-mode-alist '(("\\Berksfile$" . ruby-mode))))
 (setq auto-mode-alist (append auto-mode-alist '(("\\.god$" . ruby-mode))))
-(require 'rubocop)
 
 ;; CoffeeScript
 (defun coffee-custom ()
@@ -144,7 +143,7 @@
 (require 'yasnippet)
 (setq yas-snippet-dirs
       '("~/.emacs.d/snippets" ;; personal snippets
-        "~/.emacs.d/elpa/yasnippet-20131010.2/snippets" ;; the default collection
+        "~/.emacs.d/elpa/current_yasnippet/snippets" ;; the default collection
         ))
 
 ;; add rails-mode snippets
@@ -172,9 +171,13 @@
 (eval-after-load 'company
   '(push 'company-robe company-backends))
 
+;; RuboCop
+(require 'rubocop)
+(add-hook 'ruby-mode-hook 'rubocop-mode)
 
 ;; Ruby-Hash-Syntax-Switcher
-(define-key ruby-mode-map (kbd "M-S") 'ruby-toggle-hash-syntax)
+;; (define-key ruby-mode-map (kbd "M-S") 'ruby-toggle-hash-syntax)
+(define-key global-map (kbd "M-S") 'ruby-toggle-hash-syntax)
 
 ;; Speedbar
 (require 'sr-speedbar)
@@ -185,21 +188,58 @@
 (setq speedbar-mode-hook '(lambda () (buffer-face-set 'speedbar-face)))
 
 
-;;;;;;;;;;;;;;;;;;;;
-;; -- ORG-MODE -- ;;
-;;;;;;;;;;;;;;;;;;;;
-
+;; org mode
 (require 'org-install)
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
 (setq org-agenda-files '("~/documents/org"))
-
 ;; Clocking: http://orgmode.org/manual/Clocking-work-time.html#Clocking-work-time
 (setq org-clock-persist 'history)
 (org-clock-persistence-insinuate)
 (setq org-clock-persist t)
+
+;;;;;;;;;;;;;;;;;;;;;
+;; -- Functions -- ;;
+;;;;;;;;;;;;;;;;;;;;;
+
+(defun search-current-word ()
+  "Call `isearch' on current word or text selection.
+“word” here is A to Z, a to z, and hyphen 「-」 and underline 「_」, independent of syntax table.
+URL `http://ergoemacs.org/emacs/modernization_isearch.html'
+Version 2015-04-09"
+  (interactive)
+  (let ( ξp1 ξp2 )
+    (if (use-region-p)
+        (progn
+          (setq ξp1 (region-beginning))
+          (setq ξp2 (region-end)))
+      (save-excursion
+        (skip-chars-backward "-_A-Za-z0-9")
+        (setq ξp1 (point))
+        (right-char)
+        (skip-chars-forward "-_A-Za-z0-9")
+        (setq ξp2 (point))))
+    (setq mark-active nil)
+    (when (< ξp1 (point))
+      (goto-char ξp1))
+    (isearch-mode t)
+    (isearch-yank-string (buffer-substring-no-properties ξp1 ξp2))))
+
+(global-set-key (kbd "C-d") 'search-current-word)
+
+(progn
+  ;; set arrow keys in isearch. left/right is backward/forward, up/down is history. press Return to exit
+  (define-key isearch-mode-map (kbd "<left>") 'isearch-repeat-backward) ; single key, useful
+  (define-key isearch-mode-map (kbd "<right>") 'isearch-repeat-forward) ; single key, useful
+ )
+
+;; ag - search
+(setq ag-arguments '("--ignore" "tmp" "--ignore" "log" "--ignore" "backups"
+                     "--ignore" "TAGS" "--ignore" ".rsync_cache"
+                     "--smart-case" "--column" "--"))
+(global-set-key (kbd "C-3") 'ag-project) ; Strg - 3
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; -- KEYBINDINGS -- ;;

@@ -9,3 +9,4 @@ packages/emacs-rails
 
 /backups/*
 /session*
+/project-explorer-cache
