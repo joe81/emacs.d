@@ -3,10 +3,8 @@
 ;;; Code:
 
 
-;;;### (autoloads (find-file-in-project-by-selected ffip-get-project-root-directory
-;;;;;;  find-file-in-project ffip-current-full-filename-match-pattern-p)
-;;;;;;  "find-file-in-project" "find-file-in-project.el" (22019 47889
-;;;;;;  67992 338000))
+;;;### (autoloads nil "find-file-in-project" "find-file-in-project.el"
+;;;;;;  (22022 32582 0 0))
 ;;; Generated autoloads from find-file-in-project.el
 
 (defvar ffip-filename-rules '(ffip-filename-identity ffip-filename-dashes-to-camelcase ffip-filename-camelcase-to-dashes))
@@ -79,8 +77,8 @@ If NUM is given, only files modfied NUM days before will be selected.
 
 ;;;***
 
-;;;### (autoloads nil nil ("find-file-in-project-pkg.el") (22019
-;;;;;;  47889 78486 515000))
+;;;### (autoloads nil nil ("find-file-in-project-pkg.el") (22022
+;;;;;;  32583 309884 0))
 
 ;;;***
 

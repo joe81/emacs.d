@@ -241,6 +241,9 @@ Version 2015-04-09"
                      "--smart-case" "--column" "--"))
 (global-set-key (kbd "C-3") 'ag-project) ; Strg - 3
 
+;; find file in project
+(global-set-key (kbd "C-1") 'find-file-in-project)
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; -- KEYBINDINGS -- ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
