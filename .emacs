@@ -237,12 +237,15 @@ Version 2015-04-09"
 
 ;; ag - search
 (setq ag-arguments '("--ignore" "tmp" "--ignore" "log" "--ignore" "backups"
-                     "--ignore" "TAGS" "--ignore" ".rsync_cache"
-                     "--smart-case" "--column" "--"))
+                     "--ignore" "TAGS" "--ignore" ".rsync_cache" "--ignore" "coverage"
+                     "--ignore" "cache"
+                     "--smart-case" "--column" "--nogroup" "--"))
 (global-set-key (kbd "C-3") 'ag-project) ; Strg - 3
 
 ;; find file in project
 (global-set-key (kbd "C-1") 'find-file-in-project)
+;; do NOT search files in below directories
+(setq ffip-prune-patterns '(".git" ".rsync_cache" "tmp" "vendor/cache" ".routes"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; -- KEYBINDINGS -- ;;
