@@ -8,14 +8,6 @@
 (add-to-list 'package-archives
   '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
-;; Add the original Emacs Lisp Package Archive
-(add-to-list 'package-archives
-             '("elpa" . "http://tromey.com/elpa/"))
-
-;; Add the user-contributed repository
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
-
 ;;;;;;;;;;;;;;;;;;
 ;; Main Configs ;;
 ;;;;;;;;;;;;;;;;;;
@@ -370,7 +362,10 @@ With argument, do this that many times."
  '(rails-ws:port "3000")
  '(rails-ws:server-name "http://localhost")
  '(ruby-insert-encoding-magic-comment nil)
- '(safe-local-variable-values (quote ((encoding . utf-8))))
+ '(safe-local-variable-values
+   (quote
+    ((buffer-file-coding-system . utf-8)
+     (encoding . utf-8))))
  '(sh-basic-offset 2)
  '(speedbar-default-position (quote right))
  '(speedbar-indentation-width 2)
@@ -394,4 +389,4 @@ With argument, do this that many times."
  '(font-lock-constant-face ((nil (:foreground "#FBDE2D"))))
  '(font-lock-keyword-face ((t (:foreground "#FBDE2D"))))
  '(font-lock-operator-face ((nil (:foreground "#FBDE2D"))))
- '(font-lock-variable-name-face ((nil (:foreground "#ff0" :weight semi-bold)))))
+ '(font-lock-variable-name-face ((nil (:foreground "#FBDE2D" :weight semi-bold)))))
