@@ -234,11 +234,14 @@ Version 2015-04-09"
                      "--smart-case" "--column" "--nogroup" "--"))
 (global-set-key (kbd "C-3") 'ag-project) ; Strg - 3
 
-;; find file in project
-(global-set-key (kbd "C-1") 'find-file-in-project)
-;; do NOT search files in below directories
-(setq ffip-prune-patterns '(".git" ".rsync_cache" "tmp" "vendor/cache" ".routes"))
+;; ;; find file in project
+;; (global-set-key (kbd "C-1") 'find-file-in-project)
+;; ;; do NOT search files in below directories
+;; (setq ffip-prune-patterns '(".git" ".rsync_cache" "tmp" "vendor/cache" ".routes"))
 
+(global-set-key (kbd "C-1") 'fiplr-find-file)
+(setq fiplr-ignored-globs '((directories (".git" ".svn" "cache" ".routes" ".rsync_cache"))
+                            (files ("*.zip" "*~"))))
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; -- KEYBINDINGS -- ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -337,7 +340,7 @@ With argument, do this that many times."
  '(coffee-tab-width 2)
  '(column-number-mode t)
  '(company-auto-complete (quote (quote company-explicit-action-p)))
- '(company-idle-delay 0.6)
+ '(company-idle-delay 0.4)
  '(company-tooltip-limit 5)
  '(cua-delete-selection nil)
  '(cua-enable-cua-keys nil)
@@ -345,10 +348,17 @@ With argument, do this that many times."
  '(cua-normal-cursor-color "black")
  '(ecb-options-version "2.40")
  '(fill-column 90)
+ '(fiplr-ignored-globs
+   (quote
+    ((directories
+      (".git" ".svn" "cache" ".routes" ".rsync_cache"))
+     (files
+      ("*.zip" "*~")))))
  '(ido-enable-flex-matching t)
  '(js-indent-level 2)
  '(kill-ring-max 2000)
  '(linum-mode t t)
+ '(magit-commit-arguments nil)
  '(rails-always-use-text-menus t)
  '(rails-chm-file nil)
  '(rails-default-environment "development")
@@ -361,6 +371,7 @@ With argument, do this that many times."
  '(rails-ws:default-server-type "mongrel")
  '(rails-ws:port "3000")
  '(rails-ws:server-name "http://localhost")
+ '(ruby-end-insert-newline nil)
  '(ruby-insert-encoding-magic-comment nil)
  '(safe-local-variable-values
    (quote
