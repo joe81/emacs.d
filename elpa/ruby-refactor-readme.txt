@@ -26,7 +26,7 @@ be created directly above the selected region and the region
 will be replaced with the variable.
 
 ## Extract Constant:
-Select a region of text and invoke `ruby-refactor-extract-contant`.
+Select a region of text and invoke `ruby-refactor-extract-constant`.
 You'll be prompted for a constant name.  The new constant will
 be created at the top of the enclosing class or module directly
 after any include or extend statements and the regions will be
@@ -78,4 +78,3 @@ it closest.  I kinda got nutty with this one.
 ## TODO
 From the vim plugin, these remain to be done (I don't plan to do them all.)
  - remove inline temp (sexy!)
- - convert post conditional

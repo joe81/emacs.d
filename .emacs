@@ -242,6 +242,10 @@ Version 2015-04-09"
 (global-set-key (kbd "C-1") 'fiplr-find-file)
 (setq fiplr-ignored-globs '((directories (".git" ".svn" "cache" ".routes" ".rsync_cache"))
                             (files ("*.zip" "*~"))))
+
+;; list all ruby methods of current buffer
+(global-set-key (kbd "C-c o") (lambda () (interactive) (occur "def")))
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; -- KEYBINDINGS -- ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
