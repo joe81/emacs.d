@@ -61,8 +61,6 @@
 ;; Package Config ;;
 ;;;;;;;;;;;;;;;;;;;;
 
-(require 'autopair)
-(autopair-global-mode) ;; to enable in all buffers
 
 ;; Lorem Ipsum
 (autoload 'Lorem-ipsum-insert-paragraphs "lorem-ipsum" "" t)
@@ -162,6 +160,9 @@
 ;;   '(add-to-list 'company-backends 'company-inf-ruby))
 (eval-after-load 'company
   '(push 'company-robe company-backends))
+
+(eval-after-load "ruby-mode"
+  '(add-hook 'ruby-mode-hook 'ruby-electric-mode))
 
 ;; RuboCop
 (require 'rubocop)
@@ -339,7 +340,6 @@ With argument, do this that many times."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(autopair-global-mode t)
  '(blink-cursor-mode nil)
  '(coffee-tab-width 2)
  '(column-number-mode t)
