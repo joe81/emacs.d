@@ -24,7 +24,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
-(set-face-attribute 'default nil :height 100)
+(set-face-attribute 'default nil :height 105)
 
 (prefer-coding-system 'utf-8)
 (set-language-environment 'utf-8)
@@ -153,7 +153,7 @@
 
 ;; robe
 (add-hook 'ruby-mode-hook 'robe-mode)
-;; (add-hook 'robe-mode-hook 'robe-start)
+(add-hook 'rhtml-mode-hook 'robe-mode)
 
 (add-hook 'after-init-hook 'global-company-mode)
 ;; (eval-after-load 'company
@@ -163,6 +163,8 @@
 
 (eval-after-load "ruby-mode"
   '(add-hook 'ruby-mode-hook 'ruby-electric-mode))
+(eval-after-load "rhtml-mode"
+  '(add-hook 'rhtml-mode-hook 'ruby-electric-mode))
 
 ;; RuboCop
 (require 'rubocop)
@@ -359,7 +361,7 @@ With argument, do this that many times."
     ((directories
       (".git" ".svn" "cache" ".routes" ".rsync_cache"))
      (files
-      ("*.zip" "*~")))))
+      ("*.zip" "*~")))) t)
  '(ido-enable-flex-matching t)
  '(js-indent-level 2)
  '(kill-ring-max 2000)

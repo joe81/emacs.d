@@ -364,12 +364,12 @@ enabled."
    (cond
     ((ruby-electric-code-at-point-p)
      (save-excursion
-       (insert "}")
+       (insert " }")
        (font-lock-fontify-region (line-beginning-position) (point)))
      (cond
       ((ruby-electric-string-at-point-p) ;; %w{}, %r{}, etc.
        (if region-beginning
-           (forward-char 1)))
+           (forward-char 2)))
       (ruby-electric-newline-before-closing-bracket
        (cond (region-beginning
               (save-excursion
@@ -389,7 +389,7 @@ enabled."
              (goto-char region-beginning)
              (insert " "))
          (insert " "))
-       (insert " ")
+       (insert "")
        (and region-beginning
             (forward-char 1)))))
     ((ruby-electric-string-at-point-p)
