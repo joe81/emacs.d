@@ -169,8 +169,10 @@
 (add-hook 'ruby-mode-hook 'rubocop-mode)
 
 ;; Ruby-Hash-Syntax-Switcher
-;; (define-key ruby-mode-map (kbd "M-S") 'ruby-toggle-hash-syntax)
-(define-key global-map (kbd "M-S") 'ruby-toggle-hash-syntax)
+(global-set-key (kbd "M-S") 'ruby-toggle-hash-syntax)
+
+;; Ruby FactoryGirl Switcher
+(global-set-key (kbd "C-c C-f") 'ruby-factory-switch-to-buffer)
 
 ;; Speedbar
 (require 'sr-speedbar)
