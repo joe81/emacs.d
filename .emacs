@@ -76,10 +76,6 @@
 (require 'linum+)
 (global-linum-mode 1)
 
-(require 'etags-select)
-(global-set-key "\M-?" 'etags-select-find-tag-at-point)
-(global-set-key "\M--" 'etags-select-find-tag)
-
 ;; cut and paste
 (transient-mark-mode 1)
 
@@ -148,6 +144,7 @@
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
 ;; ruby-tools-mode
+;;   switch string to symbol and so on ...
 ;;   https://github.com/rejeep/ruby-tools.el
 (add-hook 'ruby-mode-hook 'ruby-tools-mode)
 
@@ -156,8 +153,7 @@
 (add-hook 'rhtml-mode-hook 'robe-mode)
 
 (add-hook 'after-init-hook 'global-company-mode)
-;; (eval-after-load 'company
-;;   '(add-to-list 'company-backends 'company-inf-ruby))
+
 (eval-after-load 'company
   '(push 'company-robe company-backends))
 
