@@ -22,6 +22,7 @@
 
 (cua-mode)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 (set-face-attribute 'default nil :height 105)
@@ -90,8 +91,8 @@
 (setq-default indent-tabs-mode nil)
 
 ;; format of comments in code
-(require 'filladapt)
-(setq-default filladapt-mode t)
+;; (require 'filladapt)
+;; (setq-default filladapt-mode t)
 
 ;; disable tool-bar
 (tool-bar-mode 0)
@@ -118,6 +119,8 @@
 (setq auto-mode-alist (append auto-mode-alist '(("\\Berksfile$" . ruby-mode))))
 (setq auto-mode-alist (append auto-mode-alist '(("\\.god$" . ruby-mode))))
 
+(add-hook 'after-init-hook 'inf-ruby-switch-from-compilation)
+
 ;; CoffeeScript
 (defun coffee-custom ()
   "coffee-mode-hook"
@@ -143,6 +146,9 @@
 ;; flymake
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
+;; flymake
+(add-hook 'json-mode-hook 'flymake-json-load)
+
 ;; ruby-tools-mode
 ;;   switch string to symbol and so on ...
 ;;   https://github.com/rejeep/ruby-tools.el
@@ -152,15 +158,19 @@
 (add-hook 'ruby-mode-hook 'robe-mode)
 (add-hook 'rhtml-mode-hook 'robe-mode)
 
-(add-hook 'after-init-hook 'global-company-mode)
+;; (add-hook 'after-init-hook 'global-company-mode)
 
-(eval-after-load 'company
-  '(push 'company-robe company-backends))
+;; (eval-after-load 'company
+;;   '(push 'company-robe company-backends))
 
-(eval-after-load "ruby-mode"
-  '(add-hook 'ruby-mode-hook 'ruby-electric-mode))
-(eval-after-load "rhtml-mode"
-  '(add-hook 'rhtml-mode-hook 'ruby-electric-mode))
+;; (eval-after-load "ruby-mode"
+;;   '(add-hook 'ruby-mode-hook 'ruby-electric-mode))
+;; (eval-after-load "rhtml-mode"
+;;   '(add-hook 'rhtml-mode-hook 'ruby-electric-mode))
+(add-hook 'js-mode-hook 'smartparens-mode)
+(add-hook 'ruby-mode-hook 'smartparens-mode)
+(add-hook 'rhtml-mode-hook 'smartparens-mode)
+(add-hook 'yaml-mode-hook 'smartparens-mode)
 
 ;; RuboCop
 (require 'rubocop)
@@ -175,11 +185,10 @@
 ;; Speedbar
 (require 'sr-speedbar)
 (make-face 'speedbar-face)
-(set-face-font 'speedbar-face "DejaVu Sans Mono 11")
+(set-face-font 'speedbar-face "DejaVu Sans Mono 10")
 (setq speedbar-use-images nil)
 (setq sr-speedbar-right-side nil)
 (setq speedbar-mode-hook '(lambda () (buffer-face-set 'speedbar-face)))
-
 
 ;; org mode
 (require 'org-install)
@@ -235,14 +244,7 @@ Version 2015-04-09"
                      "--smart-case" "--column" "--nogroup" "--"))
 (global-set-key (kbd "C-3") 'ag-project) ; Strg - 3
 
-;; ;; find file in project
-;; (global-set-key (kbd "C-1") 'find-file-in-project)
-;; ;; do NOT search files in below directories
-;; (setq ffip-prune-patterns '(".git" ".rsync_cache" "tmp" "vendor/cache" ".routes"))
-
 (global-set-key (kbd "C-1") 'fiplr-find-file)
-(setq fiplr-ignored-globs '((directories (".git" ".svn" "cache" ".routes" ".rsync_cache"))
-                            (files ("*.zip" "*~"))))
 
 ;; list all ruby methods of current buffer
 (global-set-key (kbd "C-c o") (lambda () (interactive) (occur "def")))
@@ -292,9 +294,26 @@ Version 2015-04-09"
 
 ;; Hide/Show blocks
 (global-set-key "\C-c\C-a" 'hs-hide-all)
-(global-set-key "\C-c\C-h" 'hs-hide-all)
 (global-set-key "\C-c\C-q" 'hs-show-all)
-(global-set-key "\C-c\C-y" 'hs-show-block)
+(global-set-key "\C-c\C-h" 'hs-hide-block)
+(global-set-key "\C-c\C-s" 'hs-show-block)
+
+(add-hook 'ruby-mode-hook
+  (lambda () (hs-minor-mode)))
+
+(eval-after-load "hideshow"
+  '(add-to-list 'hs-special-modes-alist
+    `(ruby-mode
+      ,(rx (or "context" "def" "class" "module" "do" "{" "[")) ; Block start
+      ,(rx (or "}" "]" "end"))                       ; Block end
+      ,(rx (or "#" "=begin"))                        ; Comment start
+      ruby-forward-sexp nil)))
+
+;; (global-set-key (kbd "C-c h") 'hs-hide-block)
+;; (global-set-key (kbd "C-c s") 'hs-show-block)
+
+;; git timemachine
+(global-set-key [f12] 'git-timemachine)
 
 (require 'move-text)
 (global-set-key [M-up] 'move-text-up)
@@ -344,7 +363,8 @@ With argument, do this that many times."
  '(coffee-tab-width 2)
  '(column-number-mode t)
  '(company-auto-complete (quote (quote company-explicit-action-p)))
- '(company-idle-delay 0.4)
+ '(company-auto-complete-chars nil)
+ '(company-idle-delay 0.3)
  '(company-tooltip-limit 5)
  '(cua-delete-selection nil)
  '(cua-enable-cua-keys nil)
@@ -355,9 +375,9 @@ With argument, do this that many times."
  '(fiplr-ignored-globs
    (quote
     ((directories
-      (".git" ".svn" "cache" ".routes" ".rsync_cache"))
+      (".git" ".svn" "cache" ".routes" ".rsync_cache" "tmp" "vcr_cassettes" "cms" "uploads"))
      (files
-      ("*.zip" "*~")))) t)
+      ("*.zip" "*~")))))
  '(ido-enable-flex-matching t)
  '(js-indent-level 2)
  '(kill-ring-max 2000)
@@ -379,7 +399,8 @@ With argument, do this that many times."
  '(ruby-insert-encoding-magic-comment nil)
  '(safe-local-variable-values
    (quote
-    ((buffer-file-coding-system . utf-8)
+    ((buffer-file-coding-system . iso-8859-1)
+     (buffer-file-coding-system . utf-8)
      (encoding . utf-8))))
  '(sh-basic-offset 2)
  '(speedbar-default-position (quote right))
