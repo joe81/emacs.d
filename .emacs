@@ -2,6 +2,13 @@
 ;; Packaging ;;
 ;;;;;;;;;;;;;;;
 
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+;; (package-initialize)
+
 (require 'package)
 
 ;; MELPA
@@ -21,7 +28,6 @@
     (setq ns-option-modifier nil))
 
 (cua-mode)
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -91,8 +97,8 @@
 (setq-default indent-tabs-mode nil)
 
 ;; format of comments in code
-;; (require 'filladapt)
-;; (setq-default filladapt-mode t)
+(require 'filladapt)
+(setq-default filladapt-mode t)
 
 ;; disable tool-bar
 (tool-bar-mode 0)
@@ -145,8 +151,6 @@
 
 ;; flymake
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
-
-;; flymake
 (add-hook 'json-mode-hook 'flymake-json-load)
 
 ;; ruby-tools-mode
@@ -156,21 +160,17 @@
 
 ;; robe
 (add-hook 'ruby-mode-hook 'robe-mode)
-(add-hook 'rhtml-mode-hook 'robe-mode)
+;; (add-hook 'rhtml-mode-hook 'robe-mode)
 
-;; (add-hook 'after-init-hook 'global-company-mode)
+(add-hook 'after-init-hook 'global-company-mode)
 
-;; (eval-after-load 'company
-;;   '(push 'company-robe company-backends))
+(eval-after-load 'company
+  '(push 'company-robe company-backends))
 
-;; (eval-after-load "ruby-mode"
-;;   '(add-hook 'ruby-mode-hook 'ruby-electric-mode))
-;; (eval-after-load "rhtml-mode"
-;;   '(add-hook 'rhtml-mode-hook 'ruby-electric-mode))
-(add-hook 'js-mode-hook 'smartparens-mode)
-(add-hook 'ruby-mode-hook 'smartparens-mode)
-(add-hook 'rhtml-mode-hook 'smartparens-mode)
-(add-hook 'yaml-mode-hook 'smartparens-mode)
+(eval-after-load "ruby-mode"
+  '(add-hook 'ruby-mode-hook 'ruby-electric-mode))
+(eval-after-load "web-mode"
+   '(add-hook 'web-mode-hook 'ruby-electric-mode))
 
 ;; RuboCop
 (require 'rubocop)
@@ -185,10 +185,11 @@
 ;; Speedbar
 (require 'sr-speedbar)
 (make-face 'speedbar-face)
-(set-face-font 'speedbar-face "DejaVu Sans Mono 10")
+(set-face-font 'speedbar-face "DejaVu Sans Mono 11")
 (setq speedbar-use-images nil)
 (setq sr-speedbar-right-side nil)
 (setq speedbar-mode-hook '(lambda () (buffer-face-set 'speedbar-face)))
+
 
 ;; org mode
 (require 'org-install)
@@ -231,19 +232,15 @@ Version 2015-04-09"
 
 (global-set-key (kbd "C-d") 'search-current-word)
 
-(progn
-  ;; set arrow keys in isearch. left/right is backward/forward, up/down is history. press Return to exit
-  (define-key isearch-mode-map (kbd "<left>") 'isearch-repeat-backward) ; single key, useful
-  (define-key isearch-mode-map (kbd "<right>") 'isearch-repeat-forward) ; single key, useful
- )
-
 ;; ag - search
 (setq ag-arguments '("--ignore" "tmp" "--ignore" "log" "--ignore" "backups"
                      "--ignore" "TAGS" "--ignore" ".rsync_cache" "--ignore" "coverage"
-                     "--ignore" "cache"
+                     "--ignore" "cache" "--ignore" "data" "--ignore" "cms"
+                     "--ignore" "vcr_cassettes" "--ignore" "*.zip"
                      "--smart-case" "--column" "--nogroup" "--"))
 (global-set-key (kbd "C-3") 'ag-project) ; Strg - 3
 
+;; find in project
 (global-set-key (kbd "C-1") 'fiplr-find-file)
 
 ;; list all ruby methods of current buffer
@@ -297,6 +294,8 @@ Version 2015-04-09"
 (global-set-key "\C-c\C-q" 'hs-show-all)
 (global-set-key "\C-c\C-h" 'hs-hide-block)
 (global-set-key "\C-c\C-s" 'hs-show-block)
+;; shift rechte Maustaste ...
+(global-set-key (kbd "S-<mouse-3>") 'hs-toggle-hiding)
 
 (add-hook 'ruby-mode-hook
   (lambda () (hs-minor-mode)))
@@ -304,16 +303,17 @@ Version 2015-04-09"
 (eval-after-load "hideshow"
   '(add-to-list 'hs-special-modes-alist
     `(ruby-mode
-      ,(rx (or "context" "def" "class" "module" "do" "{" "[")) ; Block start
+      ,(rx (or "should" "test" "context" "def" "class" "module" "do" "{" "[")) ; Block start
       ,(rx (or "}" "]" "end"))                       ; Block end
       ,(rx (or "#" "=begin"))                        ; Comment start
       ruby-forward-sexp nil)))
 
-;; (global-set-key (kbd "C-c h") 'hs-hide-block)
-;; (global-set-key (kbd "C-c s") 'hs-show-block)
 
 ;; git timemachine
 (global-set-key [f12] 'git-timemachine)
+;; magit-blame
+(global-set-key [f11] 'magit-blame-mode)
+
 
 (require 'move-text)
 (global-set-key [M-up] 'move-text-up)
@@ -336,6 +336,19 @@ With argument, do this that many times."
 (global-set-key (read-kbd-macro "<C-backspace>") 'backward-delete-word)
 (global-set-key (kbd "M-d") 'delete-word)
 
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\html\\.erb\\'" . web-mode))
+
+(global-set-key "\C-c\C-i" 'web-mode-snippet-insert)
+
+;; Cycle between snake case, camel case, etc.
+(require 'string-inflection)
+(global-set-key (kbd "C-c i") 'string-inflection-cycle)
+(global-set-key (kbd "C-c C") 'string-inflection-camelcase)        ;; Force to CamelCase
+(global-set-key (kbd "C-c L") 'string-inflection-lower-camelcase)  ;; Force to lowerCamelCase
+(global-set-key (kbd "C-c J") 'string-inflection-java-style-cycle) ;; Cycle through Java styles
+
 ;;;;;;;;;;;;;;;;;;;;;
 ;; -- VARIABLES -- ;;
 ;;;;;;;;;;;;;;;;;;;;;
@@ -343,9 +356,6 @@ With argument, do this that many times."
 ;; for emacs using ruby 1.9 and new hash syntax
 (font-lock-add-keywords
  'ruby-mode
- '(("\\(\\b\\sw[_a-zA-Z0-9]*:\\)\\(?:\\s-\\|$\\)" (1 font-lock-constant-face))))
-(font-lock-add-keywords
- 'rhtml_mode
  '(("\\(\\b\\sw[_a-zA-Z0-9]*:\\)\\(?:\\s-\\|$\\)" (1 font-lock-constant-face))))
 
 (defun highlight-operators-ruby()
@@ -364,7 +374,7 @@ With argument, do this that many times."
  '(column-number-mode t)
  '(company-auto-complete (quote (quote company-explicit-action-p)))
  '(company-auto-complete-chars nil)
- '(company-idle-delay 0.3)
+ '(company-idle-delay 0.4)
  '(company-tooltip-limit 5)
  '(cua-delete-selection nil)
  '(cua-enable-cua-keys nil)
@@ -375,14 +385,18 @@ With argument, do this that many times."
  '(fiplr-ignored-globs
    (quote
     ((directories
-      (".git" ".svn" "cache" ".routes" ".rsync_cache" "tmp" "vcr_cassettes" "cms" "uploads"))
+      (".git" ".svn" "cache" ".routes" ".rsync_cache" "tmp" "vcr_cassettes" "cms" "uploads" "vendor" "public"))
      (files
       ("*.zip" "*~")))))
+ '(global-company-mode t)
  '(ido-enable-flex-matching t)
  '(js-indent-level 2)
  '(kill-ring-max 2000)
  '(linum-mode t t)
  '(magit-commit-arguments nil)
+ '(package-selected-packages
+   (quote
+    (string-inflection smartparens slim-mode rw-hunspell rvm ruby-tools ruby-interpolation ruby-hash-syntax ruby-factory ruby-end ruby-electric ruby-dev ruby-compilation ruby-block project-local-variables project-explorer lorem-ipsum javascript highline gitconfig git-timemachine git-blame git flymake-yaml flymake-ruby flymake-json flymake-coffee flycheck-perl6 fixmee fiplr duplicate-thing company-inf-ruby color-theme autopair apache-mode)))
  '(rails-always-use-text-menus t)
  '(rails-chm-file nil)
  '(rails-default-environment "development")
@@ -391,6 +405,7 @@ With argument, do this that many times."
  '(rails-number-of-lines-shown-when-opening-log-file 130)
  '(rails-ri-command "ri")
  '(rails-tags-command "ctags-exuberant -e --Ruby-kinds=-cmfF -o TAGS -R .")
+ '(rails-test-command "bin/rails")
  '(rails-text-menu-function nil)
  '(rails-ws:default-server-type "mongrel")
  '(rails-ws:port "3000")
@@ -408,6 +423,10 @@ With argument, do this that many times."
  '(speedbar-show-unknown-files t)
  '(speedbar-update-flag t)
  '(sr-speedbar-default-width 30)
+ '(web-mode-code-indent-offset 2)
+ '(web-mode-css-indent-offset 2)
+ '(web-mode-enable-auto-indentation nil)
+ '(web-mode-markup-indent-offset 2)
  '(yas-fallback-behavior (quote call-other-command))
  '(yas-prompt-functions (quote (yas/x-prompt yas/dropdown-prompt)))
  '(yas-snippet-revival nil)
