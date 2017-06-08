@@ -76,7 +76,7 @@
 
 (require 'color-theme)
 (color-theme-initialize)
-(load-file "~/.emacs.d/elpa/color-theme-20080305.834/themes/color-theme-blackboard.el")
+(load-file "/home/joe/.emacs.d/elpa/color-theme-20080305.34/themes/color-theme-blackboard.el")
 (color-theme-blackboard)
 
 ;; linum mode
@@ -170,7 +170,9 @@
 (eval-after-load "ruby-mode"
   '(add-hook 'ruby-mode-hook 'ruby-electric-mode))
 (eval-after-load "web-mode"
-   '(add-hook 'web-mode-hook 'ruby-electric-mode))
+  '(add-hook 'web-mode-hook 'ruby-electric-mode))
+(eval-after-load "slim-mode"
+  '(add-hook 'slim-mode-hook 'ruby-electric-mode))
 
 ;; RuboCop
 (require 'rubocop)
@@ -380,6 +382,9 @@ With argument, do this that many times."
  '(cua-enable-cua-keys nil)
  '(cua-mode t nil (cua-base))
  '(cua-normal-cursor-color "black")
+ '(custom-safe-themes
+   (quote
+    ("d5b121d69e48e0f2a84c8e4580f0ba230423391a78fcb4001ccb35d02494d79e" default)))
  '(ecb-options-version "2.40")
  '(fill-column 90)
  '(fiplr-ignored-globs
