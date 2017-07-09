@@ -172,7 +172,7 @@
 (eval-after-load "web-mode"
   '(add-hook 'web-mode-hook 'ruby-electric-mode))
 (eval-after-load "slim-mode"
-  '(add-hook 'slim-mode-hook 'ruby-electric-mode))
+  '(add-hook 'slim-mode-hook 'autopair-mode))
 
 ;; RuboCop
 (require 'rubocop)
@@ -316,6 +316,9 @@ Version 2015-04-09"
 ;; magit-blame
 (global-set-key [f11] 'magit-blame-mode)
 
+;; underscore word
+(global-set-key (kbd "M--") 'string-inflection-underscore)
+
 
 (require 'move-text)
 (global-set-key [M-up] 'move-text-up)
@@ -401,7 +404,7 @@ With argument, do this that many times."
  '(magit-commit-arguments nil)
  '(package-selected-packages
    (quote
-    (string-inflection smartparens slim-mode rw-hunspell rvm ruby-tools ruby-interpolation ruby-hash-syntax ruby-factory ruby-end ruby-electric ruby-dev ruby-compilation ruby-block project-local-variables project-explorer lorem-ipsum javascript highline gitconfig git-timemachine git-blame git flymake-yaml flymake-ruby flymake-json flymake-coffee flycheck-perl6 fixmee fiplr duplicate-thing company-inf-ruby color-theme autopair apache-mode)))
+    (adoc-mode string-inflection smartparens slim-mode rw-hunspell rvm ruby-tools ruby-interpolation ruby-hash-syntax ruby-factory ruby-end ruby-electric ruby-dev ruby-compilation ruby-block project-local-variables project-explorer lorem-ipsum javascript highline gitconfig git-timemachine git-blame git flymake-yaml flymake-ruby flymake-json flymake-coffee flycheck-perl6 fixmee fiplr duplicate-thing company-inf-ruby color-theme autopair apache-mode)))
  '(rails-always-use-text-menus t)
  '(rails-chm-file nil)
  '(rails-default-environment "development")
