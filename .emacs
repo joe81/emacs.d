@@ -135,19 +135,19 @@
 
 (autoload 'rubydb "rubydb3x" "Ruby debugger" t)
 
-(require 'yasnippet)
-(setq yas-snippet-dirs
-      '("~/.emacs.d/snippets" ;; personal snippets
-        "~/.emacs.d/elpa/current_yasnippet/snippets" ;; the default collection
-        ))
+;; (require 'yasnippet)
+;; (setq yas-snippet-dirs
+;;       '("~/.emacs.d/snippets" ;; personal snippets
+;;         "~/.emacs.d/elpa/current_yasnippet/snippets" ;; the default collection
+;;         ))
 
 ;; add rails-mode snippets
-(add-hook 'ruby-mode-hook '(lambda ()
-                             (make-local-variable 'yas-extra-modes)
-                             (add-to-list 'yas-extra-modes 'rails-mode)
-                             (yas-minor-mode 1)
-                             ))
-(yas-global-mode 1)
+;; (add-hook 'ruby-mode-hook '(lambda ()
+;;                              (make-local-variable 'yas-extra-modes)
+;;                              (add-to-list 'yas-extra-modes 'rails-mode)
+;;                              (yas-minor-mode 1)
+;;                              ))
+;; (yas-global-mode 1)
 
 ;; flymake
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
@@ -160,19 +160,19 @@
 
 ;; robe
 (add-hook 'ruby-mode-hook 'robe-mode)
-;; (add-hook 'rhtml-mode-hook 'robe-mode)
-
+(add-hook 'slim-mode-hook 'robe-mode)
 (add-hook 'after-init-hook 'global-company-mode)
-
 (eval-after-load 'company
   '(push 'company-robe company-backends))
 
-(eval-after-load "ruby-mode"
-  '(add-hook 'ruby-mode-hook 'ruby-electric-mode))
-(eval-after-load "web-mode"
-  '(add-hook 'web-mode-hook 'ruby-electric-mode))
-(eval-after-load "slim-mode"
-  '(add-hook 'slim-mode-hook 'autopair-mode))
+(require 'smartparens-config)
+;; Always start smartparens mode in js-mode.
+(add-hook 'ruby-mode-hook #'smartparens-mode)
+(add-hook 'js-mode-hook #'smartparens-mode)
+(add-hook 'slim-mode-hook #'smartparens-mode)
+(add-hook 'coffee-mode-hook #'smartparens-mode)
+(add-hook 'yaml-mode-hook #'smartparens-mode)
+
 
 ;; RuboCop
 (require 'rubocop)
@@ -345,7 +345,6 @@ With argument, do this that many times."
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\html\\.erb\\'" . web-mode))
 
-(global-set-key "\C-c\C-i" 'web-mode-snippet-insert)
 
 ;; Cycle between snake case, camel case, etc.
 (require 'string-inflection)
@@ -402,9 +401,12 @@ With argument, do this that many times."
  '(kill-ring-max 2000)
  '(linum-mode t t)
  '(magit-commit-arguments nil)
+ '(markdown-command "/usr/bin/pandoc")
+ '(max-lisp-eval-depth 1000)
+ '(max-specpdl-size 13400)
  '(package-selected-packages
    (quote
-    (adoc-mode string-inflection smartparens slim-mode rw-hunspell rvm ruby-tools ruby-interpolation ruby-hash-syntax ruby-factory ruby-end ruby-electric ruby-dev ruby-compilation ruby-block project-local-variables project-explorer lorem-ipsum javascript highline gitconfig git-timemachine git-blame git flymake-yaml flymake-ruby flymake-json flymake-coffee flycheck-perl6 fixmee fiplr duplicate-thing company-inf-ruby color-theme autopair apache-mode)))
+    (web-mode flymake-json flymake-ruby flymake-yaml markdown-mode markdown-mode+ markdown-preview-mode ghub magit-popup coffee-mode yaml-mode ag move-text sr-speedbar rubocop rw-hunspell rvm ruby-interpolation ruby-factory ruby-dev ruby-compilation ruby-block project-local-variables project-explorer javascript highline gitconfig git-blame git flycheck-perl6 fixmee fiplr duplicate-thing company-inf-ruby color-theme)))
  '(rails-always-use-text-menus t)
  '(rails-chm-file nil)
  '(rails-default-environment "development")
@@ -431,6 +433,7 @@ With argument, do this that many times."
  '(speedbar-show-unknown-files t)
  '(speedbar-update-flag t)
  '(sr-speedbar-default-width 30)
+ '(tool-bar-mode nil)
  '(web-mode-code-indent-offset 2)
  '(web-mode-css-indent-offset 2)
  '(web-mode-enable-auto-indentation nil)
@@ -444,11 +447,13 @@ With argument, do this that many times."
  '(yas/skip-and-clear-key "C-d")
  '(yas/trigger-key "TAB"))
 
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:family "DejaVu Sans Mono" :foundry "PfEd" :slant normal :weight normal :height 107 :width normal))))
  '(font-lock-constant-face ((nil (:foreground "#FBDE2D"))))
  '(font-lock-keyword-face ((t (:foreground "#FBDE2D"))))
  '(font-lock-operator-face ((nil (:foreground "#FBDE2D"))))
