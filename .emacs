@@ -13,7 +13,7 @@
 
 ;; MELPA
 (add-to-list 'package-archives
-  '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  '("melpa" . "http://melpa.org/packages/") t)
 
 ;;;;;;;;;;;;;;;;;;
 ;; Main Configs ;;
@@ -74,10 +74,8 @@
 (autoload 'Lorem-ipsum-insert-sentences "lorem-ipsum" "" t)
 (autoload 'Lorem-ipsum-insert-list "lorem-ipsum" "" t)
 
-(require 'color-theme)
-(color-theme-initialize)
-(load-file "/home/joe/.emacs.d/elpa/color-theme-20080305.34/themes/color-theme-blackboard.el")
-(color-theme-blackboard)
+;; Color Theme
+(load-file "/home/joe/.emacs.d/elpa/blackboard-theme-20161216.656/blackboard-theme.el")
 
 ;; linum mode
 (require 'linum+)
@@ -149,9 +147,10 @@
 ;;                              ))
 ;; (yas-global-mode 1)
 
-;; flymake
-(add-hook 'ruby-mode-hook 'flymake-ruby-load)
-(add-hook 'json-mode-hook 'flymake-json-load)
+;; flycheck
+(add-hook 'ruby-mode-hook 'flycheck-mode)
+(add-hook 'json-mode-hook 'flycheck-mode)
+
 
 ;; ruby-tools-mode
 ;;   switch string to symbol and so on ...
@@ -159,11 +158,11 @@
 (add-hook 'ruby-mode-hook 'ruby-tools-mode)
 
 ;; robe
-(add-hook 'ruby-mode-hook 'robe-mode)
-(add-hook 'slim-mode-hook 'robe-mode)
-(add-hook 'after-init-hook 'global-company-mode)
-(eval-after-load 'company
-  '(push 'company-robe company-backends))
+;; (add-hook 'ruby-mode-hook 'robe-mode)
+;; (add-hook 'slim-mode-hook 'robe-mode)
+;; (add-hook 'after-init-hook 'global-company-mode)
+;; (eval-after-load 'company
+;;   '(push 'company-robe company-backends))
 
 (require 'smartparens-config)
 ;; Always start smartparens mode in js-mode.
@@ -175,11 +174,11 @@
 
 
 ;; RuboCop
-(require 'rubocop)
-(add-hook 'ruby-mode-hook 'rubocop-mode)
+;; (require 'rubocop)
+;; (add-hook 'ruby-mode-hook 'rubocop-mode)
 
 ;; Ruby-Hash-Syntax-Switcher
-(global-set-key (kbd "M-S") 'ruby-toggle-hash-syntax)
+(global-set-key (kbd "M-S") 'ruby-hash-syntax-toggle)
 
 ;; Ruby FactoryGirl Switcher
 (global-set-key (kbd "C-c C-f") 'ruby-factory-switch-to-buffer)
@@ -204,6 +203,9 @@
 (setq org-clock-persist 'history)
 (org-clock-persistence-insinuate)
 (setq org-clock-persist t)
+
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; -- Functions -- ;;
@@ -235,10 +237,12 @@ Version 2015-04-09"
 (global-set-key (kbd "C-d") 'search-current-word)
 
 ;; ag - search
-(setq ag-arguments '("--ignore" "tmp" "--ignore" "log" "--ignore" "backups"
+(setq ag-arguments '("--ignore" "*.scss" "--ignore" "*.html" "--ignore" "tmp" "--ignore" "log" "--ignore" "backups"
+                     "--ignore" "public" "--ignore" "assets/website" "--ignore" "assets/newsletter"
                      "--ignore" "TAGS" "--ignore" ".rsync_cache" "--ignore" "coverage"
                      "--ignore" "cache" "--ignore" "data" "--ignore" "cms"
                      "--ignore" "vcr_cassettes" "--ignore" "*.zip"
+                     "--ignore" "yarn.lock" "--ignore" "html" "--ignore" "vendor/javascripts"
                      "--smart-case" "--column" "--nogroup" "--"))
 (global-set-key (kbd "C-3") 'ag-project) ; Strg - 3
 
@@ -353,6 +357,19 @@ With argument, do this that many times."
 (global-set-key (kbd "C-c L") 'string-inflection-lower-camelcase)  ;; Force to lowerCamelCase
 (global-set-key (kbd "C-c J") 'string-inflection-java-style-cycle) ;; Cycle through Java styles
 
+;; universal ctags
+
+;; Don't ask before rereading the TAGS files if they have changed
+(setq tags-revert-without-query t)
+;; Don't warn when TAGS files are large
+(setq large-file-warning-threshold nil)
+;; Setup auto update now
+(add-hook 'prog-mode-hook
+  (lambda ()
+    (add-hook 'after-save-hook
+              'counsel-etags-virtual-update-tags 'append 'local)))
+
+
 ;;;;;;;;;;;;;;;;;;;;;
 ;; -- VARIABLES -- ;;
 ;;;;;;;;;;;;;;;;;;;;;
@@ -379,22 +396,29 @@ With argument, do this that many times."
  '(company-auto-complete (quote (quote company-explicit-action-p)))
  '(company-auto-complete-chars nil)
  '(company-idle-delay 0.4)
+ '(company-insertion-on-trigger (quote (quote company-explicit-action-p)))
+ '(company-insertion-triggers nil)
  '(company-tooltip-limit 5)
  '(cua-delete-selection nil)
  '(cua-enable-cua-keys nil)
  '(cua-mode t nil (cua-base))
  '(cua-normal-cursor-color "black")
+ '(custom-enabled-themes (quote (aalto-dark)))
  '(custom-safe-themes
    (quote
-    ("d5b121d69e48e0f2a84c8e4580f0ba230423391a78fcb4001ccb35d02494d79e" default)))
+    ("ff8be9ed2696bf7bc999423d909a603cb23a9525bb43135c0d256b0b9377c958" "c07daf599a7d07a18faaf354d269c48d4462ff7dbdbcc3773950a4b37b003d80" "d5b121d69e48e0f2a84c8e4580f0ba230423391a78fcb4001ccb35d02494d79e" default)))
  '(ecb-options-version "2.40")
  '(fill-column 90)
  '(fiplr-ignored-globs
    (quote
     ((directories
-      (".git" ".svn" "cache" ".routes" ".rsync_cache" "tmp" "vcr_cassettes" "cms" "uploads" "vendor" "public"))
+      (".git" ".svn" "cache" ".routes" ".rsync_cache" "tmp" "vcr_cassettes" "cms" "uploads" "vendor" "public" "node_modules"))
      (files
-      ("*.zip" "*~")))))
+      ("*.zip" "*~" "*.html")))))
+ '(flycheck-checkers
+   (quote
+    (ada-gnat asciidoctor asciidoc c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint css-stylelint cuda-nvcc cwl d-dmd dockerfile-hadolint emacs-lisp emacs-lisp-checkdoc erlang-rebar3 erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert go-megacheck go-staticcheck groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-standard json-jsonlint json-python-json jsonnet less less-stylelint llvm-llc lua-luacheck lua markdown-markdownlint-cli markdown-mdl nix nix-linter opam perl perl-perlcritic php php-phpmd php-phpcs processing proselint protobuf-protoc pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile python-mypy r-lintr racket rpm-rpmlint rst-sphinx rst ruby-reek ruby-rubylint ruby ruby-jruby rust-cargo rust rust-clippy scala scala-scalastyle scheme-chicken scss-lint scss-stylelint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tcl-nagelfar tex-chktex tex-lacheck texinfo textlint typescript-tslint verilog-verilator vhdl-ghdl xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby)))
+ '(flycheck-rubocoprc ".TTrubocop.yml")
  '(global-company-mode t)
  '(ido-enable-flex-matching t)
  '(js-indent-level 2)
@@ -406,7 +430,7 @@ With argument, do this that many times."
  '(max-specpdl-size 13400)
  '(package-selected-packages
    (quote
-    (web-mode flymake-json flymake-ruby flymake-yaml markdown-mode markdown-mode+ markdown-preview-mode ghub magit-popup coffee-mode yaml-mode ag move-text sr-speedbar rubocop rw-hunspell rvm ruby-interpolation ruby-factory ruby-dev ruby-compilation ruby-block project-local-variables project-explorer javascript highline gitconfig git-blame git flycheck-perl6 fixmee fiplr duplicate-thing company-inf-ruby color-theme)))
+    (blackboard-theme color-theme-modern rubocop exwm nginx-mode dockerfile-mode highlight-indentation indent-tools json-mode flycheck web-mode markdown-mode markdown-mode+ markdown-preview-mode ghub magit-popup coffee-mode yaml-mode ag move-text sr-speedbar rw-hunspell rvm ruby-interpolation ruby-factory ruby-dev ruby-compilation ruby-block project-local-variables project-explorer javascript highline gitconfig git-blame git flycheck-perl6 fixmee fiplr duplicate-thing company-inf-ruby color-theme)))
  '(rails-always-use-text-menus t)
  '(rails-chm-file nil)
  '(rails-default-environment "development")
@@ -414,7 +438,7 @@ With argument, do this that many times."
  '(rails-indent-and-complete nil)
  '(rails-number-of-lines-shown-when-opening-log-file 130)
  '(rails-ri-command "ri")
- '(rails-tags-command "ctags-exuberant -e --Ruby-kinds=-cmfF -o TAGS -R .")
+ '(rails-tags-command "ctags -e --languages=ruby -o TAGS -R.")
  '(rails-test-command "bin/rails")
  '(rails-text-menu-function nil)
  '(rails-ws:default-server-type "mongrel")

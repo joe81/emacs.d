@@ -3,6 +3,7 @@
 /auto-save-list
 /url
 /elpa/*
+/ido.last
 
 # own git repo see: https://github.com/joe81/emacs-rails
 packages/emacs-rails
